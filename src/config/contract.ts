@@ -1,12 +1,12 @@
 import type { Abi } from 'viem'
 
-// Replace with your actual contract address deployed on Polygon Amoy
+// Replace with your actual contract address deployed on MegaETH Testnet
 export const CONTRACT_ADDRESS = '0xea8c4eca7b54cae19C215C8fB34684415475463f'
 
-// Update the chain explorer URL to Amoy's explorer
-export const CHAIN_EXPLORER = 'https://amoy.polygonscan.com'
+// Update the chain explorer URL to MegaETH's explorer
+export const CHAIN_EXPLORER = 'https://megaexplorer.xyz'
 
-// Smart contract ABI (kept same if contract not changed)
+// Smart contract ABI (keep the same if your contract is unchanged)
 export const ABI: Abi = [
   {
     type: "function",
