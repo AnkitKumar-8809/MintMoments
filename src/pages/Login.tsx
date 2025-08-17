@@ -122,7 +122,7 @@ export function Login() {
                 textShadow: '0px 0px 8px rgba(255, 255, 255, 0.6)', // Light glow on small text
               }}
             >
-              Sign in to your DynamicTickets account
+              Sign in to your MintMoments account
             </p>
           </div>
 
