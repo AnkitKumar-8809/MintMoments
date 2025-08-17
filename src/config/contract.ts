@@ -1,7 +1,7 @@
 import type { Abi } from 'viem'
 
 // Replace with your actual contract address deployed on Polygon Amoy
-export const CONTRACT_ADDRESS = '0xYourAmoyDeployedContractAddress'
+export const CONTRACT_ADDRESS = '0xea8c4eca7b54cae19C215C8fB34684415475463f'
 
 // Update the chain explorer URL to Amoy's explorer
 export const CHAIN_EXPLORER = 'https://amoy.polygonscan.com'

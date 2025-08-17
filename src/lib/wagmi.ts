@@ -30,7 +30,7 @@ export const polygonAmoy = {
 // Your RainbowKit/Wagmi config
 export const config = getDefaultConfig({
   appName: 'MintMoments',
-  projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Replace with your WalletConnect project ID!
+  projectId: '0xea8c4eca7b54cae19C215C8fB34684415475463f', // Replace with your WalletConnect project ID!
   chains: [polygonAmoy],
   transports: {
     [polygonAmoy.id]: http(polygonAmoy.rpcUrls.default.http[0]),
