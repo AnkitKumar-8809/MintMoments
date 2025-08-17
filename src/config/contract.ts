@@ -11,7 +11,7 @@ export const ABI: Abi = [
   {
     type: "function",
     name: "mintTicket",
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     inputs: [
       { name: "eventId", type: "uint256" },
       { name: "tier", type: "uint8" }

@@ -2,6 +2,7 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagm
 import { ABI, CONTRACT_ADDRESS, CHAIN_EXPLORER } from '../config/contract'
 import { useEffect, useState } from 'react'
 import { shortAddr } from '../lib/format'
+import { megaETHTestnet } from '../lib/wagmi'
 
 export default function MintSection() {
   const { address, isConnected } = useAccount()
@@ -20,8 +21,7 @@ export default function MintSection() {
       abi: ABI, address: CONTRACT_ADDRESS as `0x${string}`,
       functionName: 'mintTicket',
       args: [BigInt(eventId), Number(tier)],
-      value: 0n,
-      chain: undefined,
+      chain: megaETHTestnet,
       account: address
     })
   }
