@@ -45,7 +45,7 @@ function Navbar() {
               <div className="hidden md:flex items-center space-x-2 text-sm text-gray-300">
                 <User className="h-4 w-4" />
                 <span className="truncate max-w-[150px]">
-                  {currentUser.displayName || currentUser.email}
+                  {currentUser.name || currentUser.email}
                 </span>
               </div>
             )}
