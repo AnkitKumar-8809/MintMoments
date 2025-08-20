@@ -44,7 +44,9 @@ function Navbar() {
               </h1>
             </div>
             <div className="sm:hidden">
-              <h1 className="text-sm font-bold text-white">DT</h1>
+              <h1 className="text-sm font-bold text-white">
+                DT
+              </h1>
             </div>
           </div>
 
@@ -65,7 +67,7 @@ function Navbar() {
               </div>
             )}
 
-            {/* Wallet Connect */}
+            {/* Connect Button - Responsive */}
             <div className="flex-shrink-0">
               <ConnectButton 
                 chainStatus="icon" 
