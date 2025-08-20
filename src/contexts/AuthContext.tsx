@@ -5,6 +5,7 @@ interface AuthContextType {
   currentUser: {
     email: string;
     name?: string;
+     displayName?: string; // 👈 add this
     authMethod?: string;
   } | null;
   signup(email: string, password: string, name?: string): Promise<void>;

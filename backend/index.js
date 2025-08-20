@@ -85,7 +85,7 @@ passport.use(new GoogleStrategy({
     user = new User({
       googleId: profile.id,
       name: profile.displayName,
-      email: profile.emails.value,
+      email: profile.emails?.[0]?.value, // ✅ safe
       authMethod: 'google'
     });
     

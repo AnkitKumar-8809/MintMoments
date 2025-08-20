@@ -10,9 +10,9 @@ function Navbar() {
   async function handleLogout() {
     try {
       await logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Failed to log out');
+      console.error("Failed to log out");
     }
   }
 
@@ -20,7 +20,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-primary/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo Section - Fixed */}
+          {/* Logo Section */}
           <div className="flex items-center space-x-3 min-w-0 flex-shrink-0">
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent">
               <Ticket className="h-5 w-5 text-primary" />
@@ -30,46 +30,47 @@ function Navbar() {
                 MintMoments
               </h1>
             </div>
-            {/* Mobile logo text */}
             <div className="sm:hidden">
-              <h1 className="text-sm font-bold text-white">
-                DT
-              </h1>
+              <h1 className="text-sm font-bold text-white">DT</h1>
             </div>
           </div>
 
-          {/* Right Section - Fixed */}
+          {/* Right Section */}
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
-            {/* User Info - Hidden on mobile if too cramped */}
+            {/* User Info */}
             {currentUser && (
               <div className="hidden md:flex items-center space-x-2 text-sm text-gray-300">
                 <User className="h-4 w-4" />
                 <span className="truncate max-w-[150px]">
-                  {currentUser.name || currentUser.email}
+                  {currentUser.name ||
+                    currentUser.displayName ||
+                    currentUser.email}
                 </span>
               </div>
             )}
 
-            {/* Connect Button - Responsive */}
+            {/* Wallet Connect */}
             <div className="flex-shrink-0">
-              <ConnectButton 
-                chainStatus="icon" 
+              <ConnectButton
+                chainStatus="icon"
                 showBalance={false}
                 accountStatus={{
-                  smallScreen: 'avatar',
-                  largeScreen: 'full',
+                  smallScreen: "avatar",
+                  largeScreen: "full",
                 }}
               />
             </div>
 
-            {/* Logout Button */}
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1 px-2 py-1 text-xs sm:text-sm text-gray-300 hover:text-white transition-colors rounded-md hover:bg-white/10"
-            >
-              <LogOut size={14} />
-              <span className="hidden sm:inline">Logout</span>
-            </button>
+            {/* Logout only if logged in */}
+            {currentUser && (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 px-2 py-1 text-xs sm:text-sm text-gray-300 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              >
+                <LogOut size={14} />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
