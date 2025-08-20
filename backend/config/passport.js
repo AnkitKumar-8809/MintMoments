@@ -4,7 +4,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
-// Local email+password
+// --- Local Strategy (email + password) ---
 passport.use(
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
@@ -13,7 +13,7 @@ passport.use(
         const user = await User.findOne({ email });
         if (!user) return done(null, false, { message: "Incorrect email." });
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password || "");
         if (!isMatch)
           return done(null, false, { message: "Incorrect password." });
 
@@ -25,28 +25,39 @@ passport.use(
   )
 );
 
-// Google OAuth
+// --- Google OAuth Strategy ---
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      // set this in Render env to: https://mintmoments.onrender.com/api/auth/google/callback
       callbackURL:
         process.env.GOOGLE_CALLBACK_URL ||
         "http://localhost:3001/api/auth/google/callback",
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
+        // Fallbacks if Google doesn’t return email or displayName
+        const email = profile.emails?.[0]?.value || `${profile.id}@google-oauth.com`;
+        const displayName = profile.displayName || profile.name?.givenName || "Google User";
+
         let user = await User.findOne({ googleId: profile.id });
         if (!user) {
-          user = await User.create({
-            googleId: profile.id,
-            email: profile.emails?.[0]?.value,
-            displayName: profile.displayName,
-          });
+          // Try existing email first
+          user = await User.findOne({ email });
+          if (user) {
+            user.googleId = profile.id;
+            user.displayName = displayName;
+            await user.save();
+          } else {
+            user = await User.create({
+              googleId: profile.id,
+              email,
+              displayName,
+              authMethod: "google",
+            });
+          }
         }
-        // IMPORTANT: keep the mongoose doc (don’t spread to plain object)
         return done(null, user);
       } catch (err) {
         return done(err, false);
@@ -55,9 +66,9 @@ passport.use(
   )
 );
 
+// --- Serialize/Deserialize ---
 passport.serializeUser((user, done) => {
-  // mongoose doc has .id virtual -> OK
-  done(null, user.id);
+  done(null, user.id); // user.id is a Mongoose virtual (string _id)
 });
 
 passport.deserializeUser(async (id, done) => {

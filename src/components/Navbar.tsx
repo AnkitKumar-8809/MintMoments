@@ -11,9 +11,9 @@ function Navbar() {
   async function handleLogout() {
     try {
       await logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Failed to log out');
+      console.error("Failed to log out");
     }
   }
 
@@ -42,44 +42,42 @@ function Navbar() {
               </h1>
             </div>
             <div className="sm:hidden">
-              <h1
-                className="text-sm font-bold"
-                style={{
-                  color: mintGreen,
-                  textShadow:
-                    '0px 0px 6px rgba(0, 255, 0, 0.5), 0px 0px 12px rgba(0, 255, 0, 0.3)',
-                }}
-              >
+              <h1 className="text-sm font-bold text-white">
                 DT
               </h1>
             </div>
           </div>
 
-          {/* Right Controls */}
+          {/* Right Section - Fixed */}
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+            {/* User Info - Hidden on mobile if too cramped */}
             {currentUser && (
               <div className="hidden md:flex items-center space-x-2 text-sm text-white/70">
                 <User className="h-4 w-4" />
                 <span className="truncate max-w-[150px]">
-                  {currentUser.displayName || currentUser.email}
+                  {currentUser.name ||
+                    currentUser.displayName ||
+                    currentUser.email}
                 </span>
               </div>
             )}
 
+            {/* Connect Button - Responsive */}
             <div className="flex-shrink-0">
               <ConnectButton
                 chainStatus="icon"
                 showBalance={false}
                 accountStatus={{
-                  smallScreen: 'avatar',
-                  largeScreen: 'full',
+                  smallScreen: "avatar",
+                  largeScreen: "full",
                 }}
               />
             </div>
 
+            {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1 px-2 py-1 text-xs sm:text-sm text-white/70 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              className="flex items-center gap-1 px-2 py-1 text-xs sm:text-sm text-gray-300 hover:text-white transition-colors rounded-md hover:bg-white/10"
             >
               <LogOut size={14} />
               <span className="hidden sm:inline">Logout</span>

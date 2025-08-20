@@ -2,8 +2,6 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagm
 import { ABI, CONTRACT_ADDRESS, CHAIN_EXPLORER } from '../config/contract'
 import { useEffect, useState } from 'react'
 import { shortAddr } from '../lib/format'
-import { megaETHTestnet } from '../lib/wagmi'
-import { Heading1 } from 'lucide-react'
 
 export default function MintSection() {
   const { address, isConnected } = useAccount()

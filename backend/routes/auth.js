@@ -24,17 +24,31 @@ const cookieOptions = {
 // --- Signup ---
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "User already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashed });
+    const user = new User({
+      email,
+      password: hashed,
+      name,
+      displayName: name,
+      authMethod: "email",
+    });
     await user.save();
 
     const token = createToken(user);
     res.cookie("token", token, cookieOptions);
-    res.json({ user: { email: user.email, displayName: user.displayName } });
+    res.json({
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        displayName: user.displayName || user.name || "",
+        authMethod: user.authMethod,
+      },
+    });
   } catch (err) {
     console.error("Signup error:", err);
     res.status(500).json({ message: "Server error" });
@@ -52,13 +66,20 @@ router.post("/login", (req, res, next) => {
 
     const token = createToken(user);
     res.cookie("token", token, cookieOptions);
-    res.json({ user: { email: user.email, displayName: user.displayName } });
+    res.json({
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        displayName: user.displayName || user.name || "",
+        authMethod: user.authMethod,
+      },
+    });
   })(req, res, next);
 });
 
 // --- Logout ---
 router.post("/logout", (_req, res) => {
-  // must match sameSite/secure settings to clear in all browsers
   res.clearCookie("token", { ...cookieOptions, maxAge: 0 });
   res.json({ message: "Logged out" });
 });
@@ -92,10 +113,20 @@ router.get("/me", async (req, res) => {
     if (!token) return res.status(401).json({ user: null });
 
     const decoded = jwt.verify(token, process.env.SESSION_SECRET);
-    const user = await User.findById(decoded.id).select("email displayName");
+    const user = await User.findById(decoded.id).select(
+      "email displayName name authMethod"
+    );
     if (!user) return res.status(404).json({ user: null });
 
-    res.json({ user });
+    res.json({
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        displayName: user.displayName || user.name || "",
+        authMethod: user.authMethod,
+      },
+    });
   } catch (err) {
     console.error("Error in /me:", err);
     res.status(401).json({ user: null });
